@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-o",
+                "your_executable_name",
+                "src/main.c",
+                "src/commun/base.c",
+                "src/utils/asciart.c",
+                "src/levels/levels.c",
+                "-I",
+                "src/commun",
+                "-I",
+                "src/utils/",
+                "-I",
+                "src/levels" // Include path for base.h
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

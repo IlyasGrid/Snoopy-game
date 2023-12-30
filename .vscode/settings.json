@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "levels.h": "c",
+        "base.h": "c",
+        "asciart.h": "c"
+    }
+}
