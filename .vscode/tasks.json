@@ -7,7 +7,7 @@
             "command": "gcc",
             "args": [
                 "-o",
-                "your_executable_name",
+                "snoopy",
                 "main.c",
                 "commun/base.c",
                 "utils/asciart.c",

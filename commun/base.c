@@ -11,6 +11,7 @@ void setup()
     SetConsoleCursorInfo(consoleHandle, &cursorInfo);
 
     gameOver = FALSE;
+    win = FALSE;
     nbrCoins = 4;
     startTime = clock();
 
@@ -76,9 +77,14 @@ void drawGame()
         }
         printf("\n");
     }
-
+    levelLabel(label);
     printf("\n%d coin(s) reamining ", nbrCoins);
     printf("\nIn %d s ", timer);
+}
+
+void levelLabel(char *label)
+{
+    printf("\n%s ", label);
 }
 
 void updatePlayer()
@@ -133,18 +139,8 @@ void checkCoins(int x, int y)
     if (nbrCoins == 0)
     {
         gameOver = TRUE;
+        win = TRUE;
         score += timer * 1000;
-
-        congratulation();
-        printf("\nyour score was %d\n", score);
-        char save;
-        printf("save score and quit ?? (Y/N)\n");
-        scanf("%c", &save);
-        if (save == 'Y' || save == 'y')
-        {
-            saveScore(score);
-            return;
-        }
     }
 }
 
@@ -178,13 +174,6 @@ void updateBall()
         newY = ball.position.y;
     }
 
-    // // Check for collisions with the player
-    // if (matrix[newY][newX] == PLAYER)
-    // {
-    //     printf("Ball hit the player!\n");
-    //     exit(0);
-    // }
-
     // mise a jour de la position de la balle
     ball.position.x = newX;
     ball.position.y = newY;
@@ -192,7 +181,7 @@ void updateBall()
     matrix[ball.position.y][ball.position.x] = BALL;
 }
 
-// fonction pour verifier si la balle touche le player
+// // fonction pour verifier si la balle touche le player
 void collision()
 {
     if (player.position.x == ball.position.x && player.position.y == ball.position.y)
@@ -217,9 +206,9 @@ void addObstacle(int x, int y)
 }
 
 // fonction pour sauvgarder le score dans le fichier
-void saveScore(int score)
+void saveScore()
 {
-    FILE *file = fopen("../../scoretable/ScoreTable.txt", "a");
+    FILE *file = fopen("./scoretable/ScoreTable.txt", "a");
 
     if (file == NULL)
     {
@@ -236,17 +225,33 @@ void saveScore(int score)
     fclose(file);
 }
 
+void displayScoreTable()
+{
+    FILE *file = fopen("./scoretable/ScoreTable.txt", "r");
+
+    if (file == NULL)
+    {
+        printf("Error opening the file.\n");
+        return;
+    }
+
+    printf("\n%-20s %-10s\n", "Username", "Score");
+    printf("----------------------------\n");
+
+    char username[50];
+    int score;
+
+    while (fscanf(file, "Username: %49s Score: %d\n", username, &score) == 2)
+    {
+        printf("%-20s %-10d\n", username, score);
+    }
+    printf("\n----------------------------\n");
+    fclose(file);
+}
+
 // styling
 void setConsoleColor(int colorCode)
 {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(consoleHandle, colorCode);
-}
-
-//
-void clearInputBuffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
 }

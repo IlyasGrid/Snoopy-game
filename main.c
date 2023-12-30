@@ -26,13 +26,18 @@ int main()
     switch (choice)
     {
     case '1':
-        tutoriallevel();
+        // tutoriallevel();
+        tutorial();
         break;
     case '2':
         levels();
         break;
     case '3':
         printf("table du score\n");
+        displayScoreTable();
+        printf("\n entrez un cle pour revient au menu\n");
+        getchar();
+        main();
         break;
     case 'q':
         auRevoir();
@@ -52,8 +57,9 @@ void tutoriallevel()
         printf("\n play again ? (Y/N)");
 
         scanf("%c", &again);
-    } while (again == 'N' || again == 'n');
+    } while (again != 'N' || again != 'n' || again == 'Y' || again == 'y');
 
+    system("cls");
     printf("\n start level 1 (Y/N)");
     scanf("%c", again);
     if (again == 'Y')
@@ -73,10 +79,6 @@ void levels()
     system("cls");
     level1();
     system("cls");
-    printf("Congratulations! You've completed Level 1.\n");
-    Sleep(1500);
     level2();
-    system("cls");
-    printf("Congratulations! You've completed Level 1.\n");
-    Sleep(1500);
+    saveScore();
 }
