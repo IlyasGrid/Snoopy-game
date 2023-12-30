@@ -35,11 +35,11 @@ typedef struct
     Cordonee direction;
 } Ball;
 
-extern Player player;
-extern Ball ball;
-extern clock_t startTime;
-extern int gameOver, nbrCoins, timer, score;
-extern char matrix[LIGNE + 2][COLONNE + 2];
+Player player;
+Ball ball;
+clock_t startTime;
+int gameOver, nbrCoins, timer, score;
+char matrix[LIGNE + 2][COLONNE + 2];
 
 void setup();
 void drawGame();

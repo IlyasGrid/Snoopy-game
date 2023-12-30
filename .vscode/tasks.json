@@ -8,16 +8,10 @@
             "args": [
                 "-o",
                 "your_executable_name",
-                "src/main.c",
-                "src/commun/base.c",
-                "src/utils/asciart.c",
-                "src/levels/levels.c",
-                "-I",
-                "src/commun",
-                "-I",
-                "src/utils/",
-                "-I",
-                "src/levels" // Include path for base.h
+                "main.c",
+                "commun/base.c",
+                "utils/asciart.c",
+                "levels/levels.c"
             ],
             "group": {
                 "kind": "build",
