@@ -86,45 +86,54 @@ void levelLabel(char *label)
 {
     printf("\n%s ", label);
 }
-
 void updatePlayer()
 {
-
     // Clear the player's current position
     matrix[player.position.y][player.position.x] = EMPTY;
+
+    int nextX = player.position.x;
+    int nextY = player.position.y;
 
     if (GetAsyncKeyState('A') & 0x8000)
     {
         if (player.position.x > 1)
         {
-            player.position.x--;
+            nextX = player.position.x - 1;
         }
     }
     if (GetAsyncKeyState('D') & 0x8000)
     {
         if (player.position.x < COLONNE)
         {
-            player.position.x++;
+            nextX = player.position.x + 1;
         }
     }
     if (GetAsyncKeyState('W') & 0x8000)
     {
         if (player.position.y > 1)
         {
-            player.position.y--;
+            nextY = player.position.y - 1;
         }
     }
     if (GetAsyncKeyState('S') & 0x8000)
     {
         if (player.position.y < LIGNE)
         {
-            player.position.y++;
+            nextY = player.position.y + 1;
         }
     }
 
-    // cheking if the player next position contain a coin
-    checkCoins(player.position.y, player.position.x);
-    collision();
+    // Check if the next position contains an obstacle
+    if (matrix[nextY][nextX] != OBSTACLE)
+    {
+        // If not an obstacle, update the player's position
+        player.position.x = nextX;
+        player.position.y = nextY;
+
+        // Check if the player collected a coin
+        checkCoins(player.position.y, player.position.x);
+        collision();
+    }
 
     matrix[player.position.y][player.position.x] = PLAYER;
 }

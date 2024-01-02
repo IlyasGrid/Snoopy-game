@@ -32,6 +32,11 @@ void level1()
         congratulation();
         printf("\n\nYou've completed Level 1. with %d points\n", score);
         Sleep(3000);
+
+        printf("\nlevel 2\n");
+        Sleep(3000);
+        system("cls");
+        level2();
     }
     else
     {
@@ -48,7 +53,6 @@ void level1()
         else
         {
             system("cls");
-            main();
         }
     }
 }
@@ -86,7 +90,7 @@ void level2()
         system("cls");
         congratulation();
         printf("\n\nYou've completed Level 2. with %d points\n", score);
-        Sleep(3000);
+        Sleep(1500);
     }
     else
     {
@@ -109,7 +113,6 @@ void level2()
             scanf("%c", &try);
             if (try == 'Y' || try == 'y')
                 saveScore();
-            main();
         }
     }
 }
@@ -124,11 +127,22 @@ void tutorial()
 
         _kbhit();
         drawGame();
-        updateBall();
+        // updateBall();
         Sleep(1000 / 30);
         updatePlayer();
     }
 
+    setup();
+    label = "tutorial";
+    while (!gameOver)
+    {
+
+        _kbhit();
+        drawGame();
+        updateBall();
+        Sleep(1000 / 30);
+        updatePlayer();
+    }
     system("cls");
     if (win == TRUE)
     {
@@ -138,23 +152,20 @@ void tutorial()
         Sleep(3000);
     }
 
-    char try;
-    fflush(stdin);
+    // char try;
+    // system("cls");
+    // printf("\nPlay again  (Y/N)\n");
+    // scanf("%c", &try);
+    // if (try == 'Y' || try == 'y')
+    // {
 
-    system("cls");
-    printf("\nPlay again  (Y/N)\n");
-    scanf("%c", &try);
-    if (try == 'Y' || try == 'y')
-    {
+    //     system("cls");
+    //     Sleep(3000);
+    //     tutorial();
+    // }
+    // else
+    // {
 
-        system("cls");
-        Sleep(3000);
-        tutorial();
-    }
-    else
-    {
-
-        system("cls");
-        main();
-    }
+    //     system("cls");
+    // }
 }
