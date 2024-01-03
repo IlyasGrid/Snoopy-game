@@ -4,5 +4,6 @@
         "base.h": "c",
         "asciart.h": "c",
         "string": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

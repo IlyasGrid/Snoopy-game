@@ -14,13 +14,42 @@ int main()
     do
     {
         showMainMenu();
-        choice = getchar();
-        fflush(stdin); // Clear the input buffer
+        scanf("%s", &choice);
+        int code;
 
         switch (choice)
         {
+
         case '1':
-            tutorialLevel();
+
+            system("cls");
+            printf("enter code 4 digits\n");
+            scanf("%4d", &code);
+            switch (code)
+            {
+            case 1111:
+                level1();
+                break;
+
+            case 2222:
+                level2();
+                break;
+
+            case 3333:
+                level3();
+                break;
+
+            case 4444:
+                level4();
+                main();
+                break;
+
+            default:
+                printf("invalid digits");
+                Sleep(500);
+                main();
+                break;
+            }
             break;
         case '2':
             playGame();
@@ -35,7 +64,7 @@ int main()
             printf("Invalid choice. Please try again.\n");
             Sleep(900);
         }
-    } while (choice != 'q' && choice != 'Q');
+    } while (choice != '4');
 
     return 0;
 }
@@ -45,7 +74,7 @@ void showMainMenu()
     system("cls");
     snoopy();
     printf("Menu:\n");
-    printf("\t tutoriel                  1\n");
+    printf("\t level code                1\n");
     printf("\t Nouveau jeu               2\n");
     printf("\t voir le table du score    3\n");
     printf("\t Quitter                   4\n");
@@ -58,9 +87,11 @@ void tutorialLevel()
     do
     {
         tutorial();
+
+        scanf(" %c", &again);
+
         printf("\n Play again? (Y/N): ");
         scanf(" %c", &again);
-        fflush(stdin); // Clear the input buffer
     } while (again == 'Y' || again == 'y');
 
     printf("\n Start level 1? (Y/N): ");
@@ -72,14 +103,7 @@ void tutorialLevel()
     }
     else
     {
-        printf("\n Get back to the main menu? (Y/N): ");
-        scanf(" %c", &again);
-
-        if (again == 'Y' || again == 'y')
-        {
-            // No need to call levels() here; it's called in playGame()
-            main();
-        }
+        main();
     }
 }
 
@@ -88,11 +112,17 @@ void playGame()
     system("cls");
     level1();
     system("cls");
-    char save;
-    printf("Save your score ? (y/n)\n");
-    scanf("%c", &save);
-    if (save == 'y' || save == 'Y')
-        saveScore();
+
+    if (win == TRUE)
+    {
+        char save;
+        printf("Save your score ? (y/n)\n");
+        scanf("%c", &save);
+        if (save == 'y' || save == 'Y')
+            saveScore();
+        else
+            main();
+    }
     else
         main();
 }

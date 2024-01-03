@@ -63,11 +63,19 @@ void drawGame()
             }
             else if (matrix[i][j] == BALL)
             {
-                setConsoleColor(12); // Red color for the birds
+                setConsoleColor(12);
+            }
+            else if (matrix[i][j] == MOVABLE_BLOC)
+            {
+                setConsoleColor(7);
+            }
+            else if (matrix[i][j] == TELEPORT_POINT)
+            {
+                setConsoleColor(7);
             }
             else if (matrix[i][j] == COIN)
             {
-                setConsoleColor(6); // Red color for the birds
+                setConsoleColor(6);
             }
             else
             {
@@ -86,6 +94,7 @@ void levelLabel(char *label)
 {
     printf("\n%s ", label);
 }
+
 void updatePlayer()
 {
     // Clear the player's current position
@@ -122,10 +131,33 @@ void updatePlayer()
             nextY = player.position.y + 1;
         }
     }
+    if (GetAsyncKeyState('P') & 0x8000)
+    {
+        pausegame(timer);
+    }
 
     // Check if the next position contains an obstacle
     if (matrix[nextY][nextX] != OBSTACLE)
     {
+
+        if (matrix[nextY][nextX] == MOVABLE_BLOC)
+        {
+            // Check if the next position after the movable block is empty
+            int nextBlockX = nextX + (nextX - player.position.x);
+            int nextBlockY = nextY + (nextY - player.position.y);
+
+            if (matrix[nextBlockY][nextBlockX] == EMPTY)
+            {
+                // Move the movable block
+                moveBlock(nextX, nextY, nextBlockX, nextBlockY);
+            }
+        }
+
+        if (matrix[nextY][nextX] == TELEPORT_POINT)
+        {
+            teleport(&nextX, &nextY);
+        }
+
         // If not an obstacle, update the player's position
         player.position.x = nextX;
         player.position.y = nextY;
@@ -136,6 +168,14 @@ void updatePlayer()
     }
 
     matrix[player.position.y][player.position.x] = PLAYER;
+}
+
+void pausegame(int old_time)
+{
+    system("cls");
+    printf("game paused enter any key to resume\n");
+    getchar();
+    timer = old_time;
 }
 
 // fonction pour verifier les coins
@@ -149,7 +189,6 @@ void checkCoins(int x, int y)
     {
         gameOver = TRUE;
         win = TRUE;
-        score += timer * 1000;
     }
 }
 
@@ -172,11 +211,11 @@ void updateBall()
     }
 
     // verifier si il y a une collision avec obstacles ou bien coin
-    if (matrix[newY][newX] == OBSTACLE || matrix[newY][newX] == COIN)
+    if (matrix[newY][newX] == OBSTACLE || matrix[newY][newX] == COIN || matrix[newY][newX] == MOVABLE_BLOC)
     {
         // changer la direction de la ball
         ball.direction.y = -ball.direction.y;
-        ball.direction.x = -ball.direction.x;
+        ball.direction.x = ball.direction.x;
 
         // deplacer la balle a la derniere position
         newX = ball.position.x;
@@ -212,6 +251,34 @@ void addObstacle(int x, int y)
     {
         fprintf(stderr, "Error: Coordinates out of bounds for adding obstacle.\n");
     }
+}
+
+// fonction pour ajouter les obstacles
+void addMouvableBlock(int x, int y)
+{
+
+    if (x >= 1 && x <= COLONNE && y >= 1 && y <= LIGNE)
+    {
+        MovableBlock block;
+        block.position.x = x;
+        block.position.y = y;
+        block.movable = TRUE;
+        matrix[y][x] = MOVABLE_BLOC;
+    }
+    else
+    {
+        fprintf(stderr, "Error: Coordinates out of bounds for adding obstacle.\n");
+    }
+}
+
+void moveBlock(int fromX, int fromY, int toX, int toY)
+{
+
+    // Clear the block's current position
+    matrix[fromY][fromX] = EMPTY;
+
+    // Update the block's new position
+    matrix[toY][toX] = OBSTACLE;
 }
 
 // fonction pour sauvgarder le score dans le fichier
@@ -263,4 +330,36 @@ void setConsoleColor(int colorCode)
 {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(consoleHandle, colorCode);
+}
+
+void teleport(int *x, int *y)
+{
+    matrix[*y][*x] = EMPTY;
+
+    for (int i = 0; i < LIGNE; i++)
+    {
+        for (int j = 0; j < COLONNE; j++)
+        {
+            if (matrix[i][j] == TELEPORT_POINT && i != *x && j != *y)
+            {
+                *x = j;
+                *y = i;
+                printf("sdcdc\n");
+
+                return;
+            }
+        }
+    }
+}
+
+void addteleportBlock(int x, int y)
+{
+    if (x >= 1 && x <= COLONNE && y >= 1 && y <= LIGNE)
+    {
+        matrix[y][x] = TELEPORT_POINT;
+    }
+    else
+    {
+        fprintf(stderr, "Error: Coordinates out of bounds for adding obstacle.\n");
+    }
 }
